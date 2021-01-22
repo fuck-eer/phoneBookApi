@@ -7,7 +7,7 @@ import javax.persistence.Id;
 import org.hibernate.annotations.GenericGenerator;
 
 @Entity
-public class SignLog {
+public class Authtable {
 
 	@Id
 	@GenericGenerator(name = "sequence_user_id", strategy = "phoneBook.phonebookAPI.model.UserIdGenerator")
@@ -27,7 +27,7 @@ public class SignLog {
 	private String imgUrl;
 	
 	
-	public SignLog() {
+	public Authtable() {
 	
 	}
 
@@ -102,7 +102,7 @@ public class SignLog {
 	}
 
 
-	public SignLog(String name, String idToken, String phoneNumber, String password) {
+	public Authtable(String name, String idToken, String phoneNumber, String password) {
 		super();
 		this.name = name;
 		this.idToken = idToken;
