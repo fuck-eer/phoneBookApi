@@ -1,5 +1,6 @@
 package phoneBook.phonebookAPI.entity;
 
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -31,12 +32,13 @@ public class Contact {
 	}
 	
 	public Contact(String userId, String contactNo) {
-		super();
+		
 		this.userId = userId;
 		this.contactNo = contactNo;
 		this.deleteContact="notdelete";
 		this.sharedContactStatus="visible";
 	}
+	
 
 	public void setContactId(String contactId) {
 	this.contactId = contactId;
@@ -73,4 +75,5 @@ public class Contact {
 	public void setDeleteContact(String deleteContact) {
 	this.deleteContact = deleteContact;
 	}
+
 }
