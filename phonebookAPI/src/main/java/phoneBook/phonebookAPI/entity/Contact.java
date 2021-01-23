@@ -17,9 +17,11 @@ public class Contact {
     @GeneratedValue(generator = "sequence_contact_id")
 	private String contactId;
 	
+
 @ManyToOne
 @JoinColumn(name="userId")
 	private Authtable authuser;
+
 	
 	private String contactNo;
 	

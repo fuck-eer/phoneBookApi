@@ -8,3 +8,4 @@ import phoneBook.phonebookAPI.services.SignLogRepoCustom;
 public interface SignLogRepo extends JpaRepository<Authtable, String>,SignLogRepoCustom {
 
 }
+
