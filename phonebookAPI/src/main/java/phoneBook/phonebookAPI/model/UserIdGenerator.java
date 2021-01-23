@@ -12,7 +12,7 @@ public class UserIdGenerator implements IdentifierGenerator {
 
 	@Override
 	public Serializable generate(SharedSessionContractImplementor session, Object object) throws HibernateException {
-		// TODO Auto-generated method stub
+		
 		return "USR-"+ UUID.randomUUID().toString();
 	}
 
