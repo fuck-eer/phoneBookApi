@@ -17,4 +17,5 @@ public class ListContact {
 	public List<ShowContact> getContact(@RequestParam("userId") String id) {
 		return cs.showAllContact(id);
 	}
+	
 }
