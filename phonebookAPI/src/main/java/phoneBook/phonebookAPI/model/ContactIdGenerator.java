@@ -12,7 +12,7 @@ public class ContactIdGenerator implements IdentifierGenerator {
 	@Override
 	public Serializable generate(SharedSessionContractImplementor session, Object object) throws HibernateException {
 		// TODO Auto-generated method stub
-		return "LST-"+ UUID.randomUUID().toString();
+		return "PHN-"+ UUID.randomUUID().toString();
 	}
 
 	

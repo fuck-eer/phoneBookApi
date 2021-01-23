@@ -15,7 +15,6 @@ public class Contact {
     @GeneratedValue(generator = "sequence_contact_id")
 	private String contactId;
 	
-
 	private String userId;
 	
 	private String contactNo;
