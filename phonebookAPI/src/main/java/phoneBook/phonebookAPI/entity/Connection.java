@@ -6,6 +6,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 import org.hibernate.annotations.GenericGenerator;
 
@@ -16,9 +18,13 @@ public class Connection {
     @GeneratedValue(generator = "sequence_connection_id")
 	private String reqId;
 	
-	private String requrId;
+	@ManyToOne
+	@JoinColumn(name="requrId")
+	private Authtable requr;
 	
-	private String resperId;
+	@ManyToOne
+	@JoinColumn(name="resperId")
+	private Authtable resper;
 	
 	
 	private int connDuration;
@@ -26,6 +32,8 @@ public class Connection {
 	private LocalDateTime connValidTime;
 	
 	private String connStatus;
+	
+	
 	public Connection() {
 	}
 
@@ -37,20 +45,20 @@ public class Connection {
 	this.reqId = reqId;
 	}
 
-	 public String getRequrId() {
-	return requrId;
+	 public Authtable getRequrId() {
+	return requr;
 	}
 
-	 public void setRequrId(String requrId) {
-	this.requrId = requrId;
+	 public void setRequrId(Authtable requr) {
+	this.requr = requr;
 	}
 
-	 public String getResperId() {
-	return resperId;
+	 public Authtable getResperId() {
+	return resper;
 	}
 
-	 public void setResperId(String resperId) {
-	this.resperId = resperId;
+	 public void setResperId(Authtable resper) {
+	this.resper = resper;
 	}
 
 	 public int getConnDuration() {
@@ -77,18 +85,14 @@ public class Connection {
 	this.connStatus = connStatus;
 	}
 
-	public Connection(String requrId, String resperId, int connDuration) {
-		super();
-		this.requrId = requrId;
-		this.resperId = resperId;
-		this.connDuration = connDuration;
-	}
 	
-	public Connection(String requrId, String resperId) {
+	public Connection(Authtable requr, Authtable resper) {
 		super();
-		this.requrId = requrId;
-		this.resperId = resperId;
+		this.requr = requr;
+		this.resper = resper;
 		this.connDuration = 18000;
+		this.connStatus="pending";
+		this.connValidTime=null;
 	}
 
 	 

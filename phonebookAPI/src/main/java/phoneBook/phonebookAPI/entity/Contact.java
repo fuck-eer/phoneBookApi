@@ -4,6 +4,8 @@ package phoneBook.phonebookAPI.entity;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 import org.hibernate.annotations.GenericGenerator;
 
@@ -15,8 +17,9 @@ public class Contact {
     @GeneratedValue(generator = "sequence_contact_id")
 	private String contactId;
 	
-
-	private String userId;
+@ManyToOne
+@JoinColumn(name="userId")
+	private Authtable authuser;
 	
 	private String contactNo;
 	
@@ -31,9 +34,9 @@ public class Contact {
 	return contactId;
 	}
 	
-	public Contact(String userId, String contactNo) {
+	public Contact(Authtable authuser, String contactNo) {
 		
-		this.userId = userId;
+		this.authuser=authuser;
 		this.contactNo = contactNo;
 		this.deleteContact="notdelete";
 		this.sharedContactStatus="visible";
@@ -44,12 +47,12 @@ public class Contact {
 	this.contactId = contactId;
 	}
 
-	public String getUserId() {
-	return userId;
+	public Authtable getUserId() {
+	return authuser;
 	}
 
-	public void setUserId(String userId) {
-	this.userId = userId;
+	public void setUserId(Authtable userauth) {
+	this.authuser = userauth;
 	}
 
 	public String getContactNo() {
