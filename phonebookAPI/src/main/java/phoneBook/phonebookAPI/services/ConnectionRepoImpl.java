@@ -73,8 +73,18 @@ EntityManager em;
 
 	@Override
 	public List<Connection> showall(String userId) {
-		// TODO Auto-generated method stub
-		return null;
+		
+		try {
+			Query q =em.createQuery("select c from Connection c where c.resperId=:userId or c.requrId=:userId");
+			q.setParameter("userId", userId);
+			
+			return q.getResultList();
+			
+		}catch(NoResultException e) {
+			throw new NoResultException("No requests to show in here!");
+			
+		}
+		
 	}
 
 }
