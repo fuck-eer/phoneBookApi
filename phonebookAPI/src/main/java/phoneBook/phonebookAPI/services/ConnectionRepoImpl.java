@@ -1,5 +1,6 @@
 package phoneBook.phonebookAPI.services;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -36,19 +37,19 @@ EntityManager em;
 			q.setParameter("requrId", cd.getRequrId());
 			Authtable requr=(Authtable)q.getSingleResult();
 			
-			Query q1= em.createQuery("select a from Authtable a where a.userId=:reperId");
+			Query q1= em.createQuery("select a from Authtable a where a.userId=:resperId");
 			q1.setParameter("resperId", cd.getResperId());
 			Authtable resper=(Authtable)q1.getSingleResult();
 			
 			Connection c1=new Connection(requr, resper);
 			em.merge(c1);
 			
-			return "Connection Request Sent";
-			
-		}catch(Exception e) {
-			return "Something Went Wrong";
-		}
+			return "Connection Request Sent with reqId: "+c1.getReqId();
 		
+		}catch(Exception e) {
+			return "something went wrong" + e;
+		}
+//		
 		
 		
 		
@@ -59,9 +60,10 @@ EntityManager em;
 		
 		try {
 			
-			Query q=em.createQuery("update Connection c set c.connStatus=:status where c.reqId=:reqId");
+			Query q=em.createQuery("update Connection c set c.connStatus=:status , c.connValidTime=:timenow where c.reqId=:reqId");
 			q.setParameter("status", cad.getStatus());
 			q.setParameter("reqId", cad.getReqId());
+			q.setParameter("timenow", LocalDateTime.now());
 			q.executeUpdate();
 			
 			return "connection status of your request has bee changed!";

@@ -5,6 +5,7 @@ import java.util.List;
 import phoneBook.phonebookAPI.dto.DeleteContactData;
 import phoneBook.phonebookAPI.dto.HideContactData;
 import phoneBook.phonebookAPI.dto.ShowSharedData;
+import phoneBook.phonebookAPI.dto.adconDataGot;
 import phoneBook.phonebookAPI.entity.Contact;
 
 public interface ContactRepoCustom {
@@ -17,5 +18,7 @@ public interface ContactRepoCustom {
 	public String HideContact(HideContactData hd);
 	
 	public String DeleteContact(DeleteContactData dg);
+	
+	public String AddContact(adconDataGot adg);
 
 }

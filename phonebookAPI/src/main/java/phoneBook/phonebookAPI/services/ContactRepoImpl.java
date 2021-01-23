@@ -11,6 +11,8 @@ import org.springframework.stereotype.Service;
 import phoneBook.phonebookAPI.dto.DeleteContactData;
 import phoneBook.phonebookAPI.dto.HideContactData;
 import phoneBook.phonebookAPI.dto.ShowSharedData;
+import phoneBook.phonebookAPI.dto.adconDataGot;
+import phoneBook.phonebookAPI.entity.Authtable;
 import phoneBook.phonebookAPI.entity.Connection;
 import phoneBook.phonebookAPI.entity.Contact;
 import phoneBook.phonebookAPI.exception.UserContactException;
@@ -97,6 +99,25 @@ public class ContactRepoImpl implements ContactRepoCustom {
 		    return "Contact deleted successfully";
 		}catch(NoResultException e){
 			throw new NoResultException("Some error occurred"+ e);
+		}
+	}
+
+
+
+	@Override
+	public String AddContact(adconDataGot adg) {
+	
+		try {
+			Authtable a1=(Authtable) e.createQuery("select c from Authtable c where c.userId =: userId").setParameter("userId", adg.getUserId()).getSingleResult();
+			
+			Contact c1= new Contact(a1,adg.getPhoneNumber());
+			
+			e.merge(c1);
+			
+			return "Result added gracefully";
+			
+		}catch(NoResultException e) {
+			throw new NoResultException("Result not added, some error occurred"+" "+e);
 		}
 	}
 

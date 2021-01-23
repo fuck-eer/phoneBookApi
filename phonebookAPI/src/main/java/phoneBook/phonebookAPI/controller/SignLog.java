@@ -2,6 +2,8 @@ package phoneBook.phonebookAPI.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import phoneBook.phonebookAPI.dto.DataGot;
@@ -18,8 +20,8 @@ public class SignLog {
 	
 	
 	@PostMapping(path="/auth/login")
-	private LoginPack getAuth(DataGot dg){
-		
+	public LoginPack getAuth(@RequestBody DataGot dg){
+		System.out.println(dg.getName()+" "+dg.getName()+" "+dg.getPhoneNumber());
 		if(dg.getName().length()>0) {
 			return sl.atSignin(dg);
 		}else {
