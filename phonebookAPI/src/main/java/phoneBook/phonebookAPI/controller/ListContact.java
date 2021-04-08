@@ -2,6 +2,7 @@ package phoneBook.phonebookAPI.controller;
 
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,6 +18,7 @@ import phoneBook.phonebookAPI.entity.Contact;
 import phoneBook.phonebookAPI.services.ContactRepoCustom;
 
 @RestController
+@CrossOrigin
 public class ListContact {
 
 	@Autowired
@@ -33,7 +35,7 @@ public class ListContact {
 		return cs.showShared(sd);
 	}
 
-	@PostMapping(path="/hideCon")
+	@PostMapping(path="/hideAllCon")
 	public String hidcon(@RequestBody HideContactData hd) {
 		return cs.HideContact(hd);
 				}

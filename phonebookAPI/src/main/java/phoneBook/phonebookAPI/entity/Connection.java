@@ -11,6 +11,13 @@ import javax.persistence.ManyToOne;
 
 import org.hibernate.annotations.GenericGenerator;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIdentityReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class,
+property = "reqId")
+
 @Entity
 public class Connection {
 	@Id
@@ -18,10 +25,12 @@ public class Connection {
     @GeneratedValue(generator = "sequence_connection_id")
 	private String reqId;
 	
+	@JsonIdentityReference(alwaysAsId = true)
 	@ManyToOne
 	@JoinColumn(name="requrId")
 	private Authtable requr;
 	
+	@JsonIdentityReference(alwaysAsId = true)
 	@ManyToOne
 	@JoinColumn(name="resperId")
 	private Authtable resper;

@@ -9,6 +9,14 @@ import javax.persistence.ManyToOne;
 
 import org.hibernate.annotations.GenericGenerator;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIdentityReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class,
+property = "contactId")
+
 @Entity
 public class Contact {
 
@@ -17,13 +25,15 @@ public class Contact {
     @GeneratedValue(generator = "sequence_contact_id")
 	private String contactId;
 	
-
+@JsonIdentityReference(alwaysAsId = true)
 @ManyToOne
 @JoinColumn(name="userId")
 	private Authtable authuser;
 
 	
 	private String contactNo;
+	
+	private String contactName;
 	
 	private String sharedContactStatus;
 	
@@ -36,26 +46,36 @@ public class Contact {
 	return contactId;
 	}
 	
-	public Contact(Authtable authuser, String contactNo) {
+	public Contact(Authtable authuser, String contactNo, String contactName) {
 		
 		this.authuser=authuser;
 		this.contactNo = contactNo;
+		this.contactName=contactName;
 		this.deleteContact="notdelete";
 		this.sharedContactStatus="visible";
 	}
 	
 
+	public Authtable getAuthuser() {
+		return authuser;
+	}
+
+	public void setAuthuser(Authtable authuser) {
+		this.authuser = authuser;
+	}
+
+	public String getContactName() {
+		return contactName;
+	}
+
+	public void setContactName(String contactName) {
+		this.contactName = contactName;
+	}
+
 	public void setContactId(String contactId) {
 	this.contactId = contactId;
 	}
 
-	public Authtable getUserId() {
-	return authuser;
-	}
-
-	public void setUserId(Authtable userauth) {
-	this.authuser = userauth;
-	}
 
 	public String getContactNo() {
 	return contactNo;

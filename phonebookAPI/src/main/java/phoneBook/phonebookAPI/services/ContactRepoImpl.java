@@ -1,5 +1,6 @@
 package phoneBook.phonebookAPI.services;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -29,7 +30,10 @@ public class ContactRepoImpl implements ContactRepoCustom {
 	@Override
 	public List<Contact> showAllContact(String userId) {
 		
-		Query q = e.createQuery("select c from Contact c where c.authuser=: userId and c.deleteContact = 'notdelete'");
+	
+		
+		
+		Query q = e.createQuery("select c from Contact c where c.authuser.userId=: userId and c.deleteContact = 'notdelete'");
 		q.setParameter("userId", userId);
 		System.out.println(userId);
 		try {
@@ -48,29 +52,34 @@ public class ContactRepoImpl implements ContactRepoCustom {
 		
 		try {
 			
-			Query q = e.createQuery("select c from Connection as c where c.reqId =: reqId and connStatus= 'accepted'").setParameter("reqId",sd.getReqId());
+			Query q = e.createQuery("select c from Connection as c where c.reqId =: reqId and c.connStatus= 'accepted' and c.connValidTime >:timenow").setParameter("reqId",sd.getReqId()).setParameter("timenow",LocalDateTime.now());
 			Connection c1 = (Connection) q.getSingleResult();
 			
-			if(sd.getUserId()==c1.getResperId().getUserId()) {
-				
+			if(sd.getUserId().equals(c1.getResperId().getUserId())) {
+				System.out.println(sd.getUserId()+ "    "+c1.getResperId().getUserId());
 				try {
 					
-					Query query = e.createQuery("select c from Contact c where c.userId =: userId and sharedContactStatus ='visible'").setParameter("userId", c1.getRequrId().getUserId());
+//					Authtable a1=(Authtable) e.createQuery("select a from Authtable a where a.userId=: userId").setParameter("userId", c1.getRequrId().getUserId()).getSingleResult();
+					
+					Query query = e.createQuery("select c from Contact c where c.authuser.userId =: userId and c.sharedContactStatus ='visible' and c.deleteContact='notdelete'").setParameter("userId", c1.getRequrId().getUserId());
 					
 					return query.getResultList();
 				} catch(NoResultException e) {
 					throw new NoResultException("No Contacts Found to Show in this Connection");
 				}
 			}
-			else {
+			else if(sd.getUserId().equals(c1.getRequrId().getUserId())) {
 				
-				Query q1 = e.createQuery("select c from Contact c where c.userId =: userId and sharedContactStatus ='visible'").setParameter("userId", c1.getResperId().getUserId());
+				Query q1 = e.createQuery("select c from Contact c where c.authuser.userId =: userId and c.sharedContactStatus ='visible' and c.deleteContact='notdelete'").setParameter("userId", c1.getResperId().getUserId());
 				return q1.getResultList();
+			}else {
+				return null;
 			}
 		}catch (NoResultException e) {
 			
 			throw new NoResultException("Request Rejected or not Accepted");
 		}
+		
 		
 	}
 
@@ -79,7 +88,7 @@ public class ContactRepoImpl implements ContactRepoCustom {
 	@Override
 	public String HideContact(HideContactData hd) {
 		try {
-			Query q = e.createQuery("update Contact c set c.sharedContactStatus = 'hidden' where userId =: userId").setParameter("userId", hd.getUserId());
+			Query q = e.createQuery("update Contact c set c.sharedContactStatus =: status where userId =: userId").setParameter("userId", hd.getUserId()).setParameter("status", hd.getSharedContactStatus());
 			q.executeUpdate();
 			return "Contact Hidden";
 			
@@ -110,7 +119,7 @@ public class ContactRepoImpl implements ContactRepoCustom {
 		try {
 			Authtable a1=(Authtable) e.createQuery("select c from Authtable c where c.userId =: userId").setParameter("userId", adg.getUserId()).getSingleResult();
 			
-			Contact c1= new Contact(a1,adg.getPhoneNumber());
+			Contact c1= new Contact(a1,adg.getPhoneNumber(),adg.getContactName());
 			
 			e.merge(c1);
 			

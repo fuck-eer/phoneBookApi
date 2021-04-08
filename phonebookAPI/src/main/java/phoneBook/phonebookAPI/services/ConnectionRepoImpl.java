@@ -30,25 +30,46 @@ EntityManager em;
 	@Override
 	public String askNewConn(connectiondatagot cd) {
 		
-		
 		try {
+			Query q2=em.createQuery("select c from Connection where c.requrId=: requrId and c.resperId=: resperId and c.conValidTime >:timenow");
+			q2.setParameter("requrId", cd.getRequrId());
+			q2.setParameter("resperId", cd.getResperId());
+			q2.setParameter("timenow", LocalDateTime.now());
 			
-			Query q= em.createQuery("select a from Authtable a where a.userId=:requrId");
-			q.setParameter("requrId", cd.getRequrId());
-			Authtable requr=(Authtable)q.getSingleResult();
+			Connection c4= null;
+			c4=(Connection) q2.getSingleResult();
 			
-			Query q1= em.createQuery("select a from Authtable a where a.userId=:resperId");
-			q1.setParameter("resperId", cd.getResperId());
-			Authtable resper=(Authtable)q1.getSingleResult();
+			return "Connection Request is in pool with ID "+ c4.getReqId()+" please try after 3 hours";
 			
-			Connection c1=new Connection(requr, resper);
-			em.merge(c1);
 			
-			return "Connection Request Sent with reqId: "+c1.getReqId();
+		}catch(NoResultException e) {
+			
+			
 		
-		}catch(Exception e) {
-			return "something went wrong" + e;
+			try {
+				
+				Query q= em.createQuery("select a from Authtable a where a.userId=:requrId");
+				q.setParameter("requrId", cd.getRequrId());
+				Authtable requr=(Authtable)q.getSingleResult();
+				
+				Query q1= em.createQuery("select a from Authtable a where a.userId=:resperId");
+				q1.setParameter("resperId", cd.getResperId());
+				Authtable resper=(Authtable)q1.getSingleResult();
+				
+				Connection c1=new Connection(requr, resper);
+				em.merge(c1);
+				
+				return "Connection Request Sent with reqId: "+c1.getReqId();		
+				
+			
+			}catch(Exception k) {
+				return "something went wrong" + k;
+			}
+			
+			
+			
 		}
+		
 //		
 		
 		
@@ -58,12 +79,13 @@ EntityManager em;
 	@Override
 	public String actionConn(connActiondatagot cad) {
 		
+		
 		try {
 			
 			Query q=em.createQuery("update Connection c set c.connStatus=:status , c.connValidTime=:timenow where c.reqId=:reqId");
 			q.setParameter("status", cad.getStatus());
 			q.setParameter("reqId", cad.getReqId());
-			q.setParameter("timenow", LocalDateTime.now());
+			q.setParameter("timenow",  LocalDateTime.now().plusHours(3));
 			q.executeUpdate();
 			
 			return "connection status of your request has bee changed!";
